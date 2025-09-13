@@ -1,0 +1,16 @@
+#!/bin/sh
+# Apache Maven Wrapper startup script, compatible with Unix-like systems
+set -e
+WRAPPER_DIR="$(dirname "$0")/.mvn/wrapper"
+WRAPPER_JAR="$WRAPPER_DIR/maven-wrapper.jar"
+WRAPPER_PROPERTIES="$WRAPPER_DIR/maven-wrapper.properties"
+
+if [ ! -f "$WRAPPER_JAR" ]; then
+  mkdir -p "$WRAPPER_DIR"
+  URL=$(grep -E "^wrapperUrl=" "$WRAPPER_PROPERTIES" | sed -e 's#wrapperUrl=##')
+  echo "Downloading Maven Wrapper JAR from: $URL"
+  curl -fsSL -o "$WRAPPER_JAR" "$URL" || wget -q -O "$WRAPPER_JAR" "$URL"
+fi
+
+JAVA_EXE="${JAVA_HOME:+$JAVA_HOME/bin/}java"
+exec "$JAVA_EXE" -classpath "$WRAPPER_JAR" org.apache.maven.wrapper.MavenWrapperMain "$@"

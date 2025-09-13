@@ -1,0 +1,9 @@
+uploads/
+**/.env
+**/node_modules/
+**/dist/
+**/.DS_Store
+**/target/
+.idea/
+.vscode/
+backend/data/*.mv.db
