@@ -65,6 +65,30 @@ function MapController({ selectedArea }: { selectedArea?: string }) {
     }
   }, [selectedArea, map]);
 
+  // Enable scroll wheel zoom only when map is clicked/focused
+  useEffect(() => {
+    const container = map.getContainer();
+
+    const enableScroll = () => {
+      map.scrollWheelZoom.enable();
+    };
+
+    const disableScroll = () => {
+      map.scrollWheelZoom.disable();
+    };
+
+    container.addEventListener("click", enableScroll);
+    container.addEventListener("mouseenter", () => {
+      // Show hint that user can click to enable zoom
+    });
+    container.addEventListener("mouseleave", disableScroll);
+
+    return () => {
+      container.removeEventListener("click", enableScroll);
+      container.removeEventListener("mouseleave", disableScroll);
+    };
+  }, [map]);
+
   return null;
 }
 
@@ -92,9 +116,29 @@ export default function MapView({ listings, selectedArea }: MapViewProps) {
 
   return (
     <Box sx={{ position: "relative" }}>
+      {/* Hint overlay */}
+      <Box
+        sx={{
+          position: "absolute",
+          bottom: 16,
+          left: "50%",
+          transform: "translateX(-50%)",
+          zIndex: 1000,
+          backgroundColor: "rgba(0,0,0,0.7)",
+          color: "white",
+          px: 2,
+          py: 0.5,
+          borderRadius: 2,
+          fontSize: "0.75rem",
+          pointerEvents: "none",
+        }}
+      >
+        Click on map to enable zoom
+      </Box>
       <MapContainer
         center={puneCenter}
         zoom={11}
+        scrollWheelZoom={false}
         style={{
           height: "500px",
           width: "100%",

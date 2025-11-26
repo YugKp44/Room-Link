@@ -192,15 +192,19 @@ export default function RoomCard({ listing }: { listing: any }) {
               border: "1px solid rgba(30, 64, 175, 0.2)",
               mb: 2,
               transition: "all 0.3s ease",
+              color: "primary.main",
             }}
           >
-            <Typography variant="h5" fontWeight="bold" color="primary.main">
+            <Typography
+              variant="h5"
+              fontWeight="bold"
+              sx={{ color: "inherit" }}
+            >
               ₹{listing.rent?.toLocaleString()}
               <Typography
                 component="span"
                 variant="body2"
-                color="text.secondary"
-                sx={{ ml: 1, fontWeight: 500 }}
+                sx={{ ml: 1, fontWeight: 500, opacity: 0.8, color: "inherit" }}
               >
                 /month
               </Typography>

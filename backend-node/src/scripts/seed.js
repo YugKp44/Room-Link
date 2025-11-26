@@ -5,28 +5,33 @@ const bcrypt = require('bcryptjs');
 const { User, UserRole } = require('../models/User');
 const { RoomListing, RoomType, ListingStatus } = require('../models/RoomListing');
 
-// Sample room images - actual room/apartment photos from Unsplash
+// Sample room images - unique real room/apartment photos
 const roomImages = [
-  'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=800&q=80', // Living room
-  'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=800&q=80', // Apartment interior
-  'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=800&q=80', // Bedroom
-  'https://images.unsplash.com/photo-1484154218962-a197022b25ba?w=800&q=80', // Bedroom with bed
-  'https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=800&q=80', // Modern living room
-  'https://images.unsplash.com/photo-1554995207-c18c203602cb?w=800&q=80', // Living space
-  'https://images.unsplash.com/photo-1540518614846-7eded433c457?w=800&q=80', // Bedroom design
-  'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&q=80', // Living room sofa
-  'https://images.unsplash.com/photo-1560185893-a55cbc8c57e8?w=800&q=80', // Room interior
-  'https://images.unsplash.com/photo-1615529182904-14819c35db37?w=800&q=80', // Bedroom setup
-  'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=800&q=80', // Modern room
-  'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=800&q=80', // Cozy bedroom
-  'https://images.unsplash.com/photo-1585412727339-54e4bae3bbf9?w=800&q=80', // Apartment room
-  'https://images.unsplash.com/photo-1630699144867-37acec97df5a?w=800&q=80', // Indian style room
-  'https://images.unsplash.com/photo-1598928506311-c55ez361540d?w=800&q=80', // Simple bedroom
-  'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&q=80', // Kitchen
-  'https://images.unsplash.com/photo-1560185007-cde436f6a4d0?w=800&q=80', // Furnished room
-  'https://images.unsplash.com/photo-1505691938895-1758d7feb511?w=800&q=80', // Apartment bedroom
-  'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=800&q=80', // Hotel style room
-  'https://images.unsplash.com/photo-1567767292278-a4f21aa2d36e?w=800&q=80', // Modern living
+  'https://images.pexels.com/photos/1457842/pexels-photo-1457842.jpeg?w=800',   // Bedroom with bed
+  'https://images.pexels.com/photos/1571460/pexels-photo-1571460.jpeg?w=800',   // Modern living room
+  'https://images.pexels.com/photos/1643383/pexels-photo-1643383.jpeg?w=800',   // Cozy bedroom
+  'https://images.pexels.com/photos/1571468/pexels-photo-1571468.jpeg?w=800',   // Apartment interior
+  'https://images.pexels.com/photos/1648776/pexels-photo-1648776.jpeg?w=800',   // Bedroom design
+  'https://images.pexels.com/photos/1743229/pexels-photo-1743229.jpeg?w=800',   // Studio apartment
+  'https://images.pexels.com/photos/1454806/pexels-photo-1454806.jpeg?w=800',   // Room with desk
+  'https://images.pexels.com/photos/1579739/pexels-photo-1579739.jpeg?w=800',   // Living space
+  'https://images.pexels.com/photos/1669799/pexels-photo-1669799.jpeg?w=800',   // Minimalist room
+  'https://images.pexels.com/photos/1776574/pexels-photo-1776574.jpeg?w=800',   // Bedroom with wardrobe
+  'https://images.pexels.com/photos/1909791/pexels-photo-1909791.jpeg?w=800',   // Modern bedroom
+  'https://images.pexels.com/photos/2029731/pexels-photo-2029731.jpeg?w=800',   // Furnished room
+  'https://images.pexels.com/photos/2062431/pexels-photo-2062431.jpeg?w=800',   // Apartment bedroom
+  'https://images.pexels.com/photos/2079249/pexels-photo-2079249.jpeg?w=800',   // Clean bedroom
+  'https://images.pexels.com/photos/2121121/pexels-photo-2121121.jpeg?w=800',   // Room interior
+  'https://images.pexels.com/photos/2227832/pexels-photo-2227832.jpeg?w=800',   // Bright room
+  'https://images.pexels.com/photos/2251247/pexels-photo-2251247.jpeg?w=800',   // Cozy apartment
+  'https://images.pexels.com/photos/2360673/pexels-photo-2360673.jpeg?w=800',   // Bachelor room
+  'https://images.pexels.com/photos/2467285/pexels-photo-2467285.jpeg?w=800',   // Simple room
+  'https://images.pexels.com/photos/2631746/pexels-photo-2631746.jpeg?w=800',   // Student room
+  'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?w=800',   // Rental room
+  'https://images.pexels.com/photos/2747901/pexels-photo-2747901.jpeg?w=800',   // Flat interior
+  'https://images.pexels.com/photos/2869215/pexels-photo-2869215.jpeg?w=800',   // Shared room
+  'https://images.pexels.com/photos/3144580/pexels-photo-3144580.jpeg?w=800',   // PG room
+  'https://images.pexels.com/photos/3209045/pexels-photo-3209045.jpeg?w=800',   // 1BHK flat
 ];
 
 const puneAreas = [
@@ -131,6 +136,9 @@ async function seed() {
     console.log('Creating sample listings...');
     const listings = [];
     
+    // Shuffle images to ensure uniqueness
+    const shuffledImages = [...roomImages].sort(() => Math.random() - 0.5);
+    
     for (let i = 0; i < 25; i++) {
       const area = getRandomElement(puneAreas);
       const coords = areaCoordinates[area];
@@ -145,8 +153,8 @@ async function seed() {
         rent: Math.round(baseRent / 500) * 500, // Round to nearest 500
         deposit: Math.round(baseRent * getRandomInt(1, 3) / 1000) * 1000, // 1-3 months deposit
         roomType: roomType,
-        description: getRandomElement(descriptions),
-        imageUrl: getRandomElement(roomImages),
+        description: descriptions[i % descriptions.length], // Use unique descriptions
+        imageUrl: shuffledImages[i % shuffledImages.length], // Use unique images
         contactNumber: generatePhoneNumber(),
         status: ListingStatus.APPROVED,
         latitude: addRandomOffset(coords.lat),
