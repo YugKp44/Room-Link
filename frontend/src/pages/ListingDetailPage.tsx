@@ -161,7 +161,10 @@ export default function ListingDetailPage() {
                   src={
                     listing.imageUrl.startsWith("http")
                       ? listing.imageUrl
-                      : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${listing.imageUrl}`
+                      : `${
+                          import.meta.env.VITE_API_URL ||
+                          "http://localhost:8080"
+                        }${listing.imageUrl}`
                   }
                   alt="Room"
                   style={{
@@ -385,7 +388,9 @@ export default function ListingDetailPage() {
               src={
                 listing.imageUrl.startsWith("http")
                   ? listing.imageUrl
-                  : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${listing.imageUrl}`
+                  : `${
+                      import.meta.env.VITE_API_URL || "http://localhost:8080"
+                    }${listing.imageUrl}`
               }
               alt="Room"
               style={{

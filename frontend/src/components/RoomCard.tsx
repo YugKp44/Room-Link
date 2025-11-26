@@ -84,7 +84,9 @@ export default function RoomCard({ listing }: { listing: any }) {
             image={
               listing.imageUrl.startsWith("http")
                 ? listing.imageUrl
-                : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${listing.imageUrl}`
+                : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${
+                    listing.imageUrl
+                  }`
             }
             alt={`Room in ${listing.area}`}
             className="room-image"
