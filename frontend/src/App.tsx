@@ -32,6 +32,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import MyListingsPage from "./pages/MyListingsPage";
 import ListingDetailPage from "./pages/ListingDetailPage";
+import ProfilePage from "./pages/ProfilePage";
 import ParticleAnimation from "./components/ParticleAnimation";
 import { getToken, logout } from "./services/auth";
 
@@ -450,6 +451,10 @@ function App() {
                   },
                 }}
               >
+                <MenuItem component={Link} to="/profile">
+                  <AccountCircleIcon sx={{ mr: 1 }} />
+                  My Profile
+                </MenuItem>
                 <MenuItem component={Link} to="/my-listings">
                   <ListIcon sx={{ mr: 1 }} />
                   My Listings
@@ -496,6 +501,10 @@ function App() {
             <Route
               path="/my-listings"
               element={token ? <MyListingsPage /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/profile"
+              element={token ? <ProfilePage /> : <Navigate to="/login" />}
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />

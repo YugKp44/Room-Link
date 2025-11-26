@@ -81,7 +81,11 @@ export default function RoomCard({ listing }: { listing: any }) {
           <CardMedia
             component="img"
             height="220"
-            image={`http://localhost:8080${listing.imageUrl}`}
+            image={
+              listing.imageUrl.startsWith("http")
+                ? listing.imageUrl
+                : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${listing.imageUrl}`
+            }
             alt={`Room in ${listing.area}`}
             className="room-image"
             sx={{

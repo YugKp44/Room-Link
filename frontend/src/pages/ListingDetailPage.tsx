@@ -158,7 +158,11 @@ export default function ListingDetailPage() {
                 onClick={() => setImageDialogOpen(true)}
               >
                 <img
-                  src={`http://localhost:8080${listing.imageUrl}`}
+                  src={
+                    listing.imageUrl.startsWith("http")
+                      ? listing.imageUrl
+                      : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${listing.imageUrl}`
+                  }
                   alt="Room"
                   style={{
                     position: "absolute",
@@ -378,7 +382,11 @@ export default function ListingDetailPage() {
         <DialogContent sx={{ p: 0 }}>
           {listing.imageUrl && (
             <img
-              src={`http://localhost:8080${listing.imageUrl}`}
+              src={
+                listing.imageUrl.startsWith("http")
+                  ? listing.imageUrl
+                  : `${import.meta.env.VITE_API_URL || "http://localhost:8080"}${listing.imageUrl}`
+              }
               alt="Room"
               style={{
                 width: "100%",
